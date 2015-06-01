@@ -77,6 +77,10 @@ app.AppView = Backbone.View.extend({
     el: '#todoapp',
     initialize: function () {
         this.input = this.$('#new-todo');
+        $("#add_new").on("click", function (e) {
+            e.preventDefault();
+            Backbone.history.navigate('add_new', {trigger: true});
+        });
         app.todoList.on('add', this.addAll, this);
         app.todoList.on('reset', this.addAll, this);
         app.todoList.fetch(); // Loads list from local storage
@@ -118,18 +122,69 @@ app.AppView = Backbone.View.extend({
     }
 });
 
+app.addNewView = Backbone.View.extend({
+    el: '#todoapp',
+    template: _.template($('#new-template').html()),
+    initialize: function () {
+        this.input = this.$('#new-todo');
+    },
+    render: function () {
+        this.$el.html(this.template(this.model.toJSON()));
+        this.input = this.$('.edit');
+        return this; // enable chained calls
+    },
+    events: {
+        'keypress #new-todo': 'createTodoOnEnter'
+    },
+    createTodoOnEnter: function (e) {
+        if (e.which !== 13 || !this.input.val().trim()) { // ENTER_KEY = 13
+            return;
+        }
+        app.todoList.create(this.newAttributes());
+        this.input.val(''); // clean input box
+    },
+    newAttributes: function () {
+        return {
+            title: this.input.val().trim(),
+            completed: false
+        }
+    }
+});
+
 app.Router = Backbone.Router.extend({
     routes: {
-        '*filter' : 'setFilter'
+        '*filter': 'setFilter'
     },
-    setFilter: function(params) {
+
+    setFilter: function (params) {
         console.log('app.router.params = ' + params);
         window.filter = params.trim() || '';
         app.todoList.trigger('reset');
+    },
+
+    default_route: function () {
+        app.appView = new app.AppView()
+    },
+
+    newFunction: function () {
+        console.log("jump to new page");
+        app.newView = new app.addNewView()
+    },
+
+    initialize: function () {
+        {
+            var router = this,
+                routes = [
+                    [/^.*$/, "default_route"],
+                    ["add_new", "newFunction"]
+                ];
+
+            _.each(routes, function (route) {
+                router.route.apply(router, route);
+              });
+            Backbone.history.start();
+        }
     }
 });
 
 app.router = new app.Router();
-Backbone.history.start();
-app.appView = new app.AppView();
-
