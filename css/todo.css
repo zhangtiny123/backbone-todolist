@@ -27,18 +27,26 @@ h1 {
     display: inline-block;
     color: #292b33;
 }
+.text_holder {
+display: block;
+max-width: 100%;
+word-wrap: break-word;
+}
 body {
+    padding-left: 10%;
+    padding-right: 10%;
     background-color: #f6f6f6;
 }
-.text_holder {
-    display: block;
-    max-width: 100%;
-    word-wrap: break-word;
+input {
+    margin: 10px;
+    float: none;
 }
-#main {
-    margin-top: 50px;
+#todoapp {
+    margin-top: 0;
+    padding-left: 30px;
+    padding-bottom: 20px;
     background-color: #ffffff;
     border-radius: 5px;
-    width: 50%;
+    width: 100%;
     border: 1px solid #545454;
 }

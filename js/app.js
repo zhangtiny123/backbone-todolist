@@ -1,4 +1,3 @@
-
 'use strict';
 
 var app = {}; // create namespace for our app
@@ -8,21 +7,21 @@ app.Todo = Backbone.Model.extend({
         title: '',
         completed: false
     },
-    toggle: function(){
-        this.save({ completed: !this.get('completed')});
+    toggle: function () {
+        this.save({completed: !this.get('completed')});
     }
 });
 
 app.TodoList = Backbone.Collection.extend({
     model: app.Todo,
     localStorage: new Store("backbone-todo"),
-    completed: function() {
-        return this.filter(function( todo ) {
+    completed: function () {
+        return this.filter(function (todo) {
             return todo.get('completed');
         });
     },
-    remaining: function() {
-        return this.without.apply( this, this.completed() );
+    remaining: function () {
+        return this.without.apply(this, this.completed());
     }
 });
 
@@ -33,42 +32,42 @@ app.todoList = new app.TodoList();
 app.TodoView = Backbone.View.extend({
     tagName: 'li',
     template: _.template($('#item-template').html()),
-    render: function(){
+    render: function () {
         this.$el.html(this.template(this.model.toJSON()));
         this.input = this.$('.edit');
         return this; // enable chained calls
     },
-    initialize: function(){
+    initialize: function () {
         this.model.on('change', this.render, this);
         this.model.on('destroy', this.remove, this); // remove: Convenience Backbone's function for removing the view from the DOM.
     },
     events: {
-        'dblclick label' : 'edit',
-        'keypress .edit' : 'updateOnEnter',
-        'blur .edit' : 'close',
+        'dblclick label': 'edit',
+        'keypress .edit': 'updateOnEnter',
+        'blur .edit': 'close',
         'click .toggle': 'toggleCompleted',
         'click .destroy': 'destroy'
     },
-    edit: function(){
+    edit: function () {
         this.$el.addClass('editing');
         this.input.focus();
     },
-    close: function(){
+    close: function () {
         var value = this.input.val().trim();
-        if(value) {
+        if (value) {
             this.model.save({title: value});
         }
         this.$el.removeClass('editing');
     },
-    updateOnEnter: function(e){
-        if(e.which == 13){
+    updateOnEnter: function (e) {
+        if (e.which == 13) {
             this.close();
         }
     },
-    toggleCompleted: function(){
+    toggleCompleted: function () {
         this.model.toggle();
     },
-    destroy: function(){
+    destroy: function () {
         this.model.destroy();
     }
 });
@@ -85,21 +84,21 @@ app.AppView = Backbone.View.extend({
     events: {
         'keypress #new-todo': 'createTodoOnEnter'
     },
-    createTodoOnEnter: function(e){
-        if ( e.which !== 13 || !this.input.val().trim() ) { // ENTER_KEY = 13
+    createTodoOnEnter: function (e) {
+        if (e.which !== 13 || !this.input.val().trim()) { // ENTER_KEY = 13
             return;
         }
         app.todoList.create(this.newAttributes());
         this.input.val(''); // clean input box
     },
-    addOne: function(todo){
+    addOne: function (todo) {
         var view = new app.TodoView({model: todo});
         $('#todo-list').append(view.render().el);
     },
-    addAll: function(){
+    addAll: function () {
         this.$('#todo-list').html(''); // clean the todo list
         // filter todo item list
-        switch(window.filter){
+        switch (window.filter) {
             case 'pending':
                 _.each(app.todoList.remaining(), this.addOne);
                 break;
@@ -111,7 +110,7 @@ app.AppView = Backbone.View.extend({
                 break;
         }
     },
-    newAttributes: function(){
+    newAttributes: function () {
         return {
             title: this.input.val().trim(),
             completed: false
