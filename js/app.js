@@ -125,7 +125,6 @@ app.AppView = Backbone.View.extend({
 
 app.addNewView = Backbone.View.extend({
     el: '#todo-list',
-    template: _.template($('#new-template').html()),
     initialize: function () {
         this.input = this.$('#new-todo');
         app.bindEvents();
@@ -134,16 +133,16 @@ app.addNewView = Backbone.View.extend({
         $(".nav-tabs").find(".active").removeClass("active");
         $("#add_new").addClass("active");
         $("#todo-list").html("");
-        this.$el.html(this.template());
         return this; // enable chained calls
     },
     events: {
-        'keypress #new-todo': 'createTodoOnEnter'
+        'keypress #new-todo': 'finishAddTodo'
     },
-    createTodoOnEnter: function (e) {
+    finishAddTodo: function (e) {
         if (e.which !== 13 || !this.input.val().trim()) { // ENTER_KEY = 13
             return;
         }
+        Backbone.history.navigate("/", {trigger: true});
         app.todoList.create(this.newAttributes());
         this.input.val(''); // clean input box
     },
