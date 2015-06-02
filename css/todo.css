@@ -37,19 +37,11 @@ body {
     padding-right: 10%;
     background-color: #f6f6f6;
 }
-header {
-    padding: 30px;
-}
+/*header {*/
+    /*padding: 30px 30px 10px 20px;*/
+/*}*/
 
 header > input {
-    margin: 20px;
+    margin: 20px auto 20px auto;
 }
 
-#todoapp {
-    margin-top: 0;
-    padding-left: 30px;
-    padding-bottom: 20px;
-    background-color: #ffffff;
-    border-radius: 5px;
-    width: 100%;
-}

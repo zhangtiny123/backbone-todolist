@@ -16,22 +16,25 @@
 
 </head>
 <body>
-<nav class="nav">
-    <header id="header">
-        <h1>Backbone Todo List</h1>
-        <ul class="nav nav-tabs">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">pending</a></li>
-            <li role="presentation"><a href="#">completed</a></li>
-            <li role="presentation"><a href="#" id="add_new">add new</a></li>
-        </ul>
-    </header>
-</nav>
-<section id="todoapp">
-    <section id="main">
-        <ul id="todo-list" class="list-group"></ul>
+<div class="container" id="todoapp">
+    <nav class="nav">
+        <header id="header">
+            <h1>Backbone Todo List</h1>
+            <ul class="nav nav-tabs">
+                <li role="presentation" id="home" class="active"><a href="#">Home</a></li>
+                <li role="presentation" id="pending"><a href="#">pending</a></li>
+                <li role="presentation" id="completed"><a href="#">completed</a></li>
+                <li role="presentation" id="add_new"><a href="#">add new</a></li>
+            </ul>
+            <input class="form-control" id="new-todo" placeholder="What needs to be done?" autofocus>
+        </header>
+    </nav>
+    <section>
+        <section id="main">
+            <ul id="todo-list" class="list-group"></ul>
+        </section>
     </section>
-</section>
+</div>
 
 <!-- Templates -->
 <script type="text/template" id="new-template">

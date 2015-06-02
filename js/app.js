@@ -77,13 +77,14 @@ app.AppView = Backbone.View.extend({
     el: '#todoapp',
     initialize: function () {
         this.input = this.$('#new-todo');
-        $("#add_new").on("click", function (e) {
-            e.preventDefault();
-            Backbone.history.navigate('add_new', {trigger: true});
-        });
+        app.bindEvents();
         app.todoList.on('add', this.addAll, this);
         app.todoList.on('reset', this.addAll, this);
         app.todoList.fetch(); // Loads list from local storage
+    },
+    render: function() {
+        $(".nav-tabs").find(".active").removeClass("active");
+        $("#home").addClass("active");
     },
     events: {
         'keypress #new-todo': 'createTodoOnEnter'
@@ -123,14 +124,17 @@ app.AppView = Backbone.View.extend({
 });
 
 app.addNewView = Backbone.View.extend({
-    el: '#todoapp',
+    el: '#todo-list',
     template: _.template($('#new-template').html()),
     initialize: function () {
         this.input = this.$('#new-todo');
+        app.bindEvents();
     },
     render: function () {
-        this.$el.html(this.template(this.model.toJSON()));
-        this.input = this.$('.edit');
+        $(".nav-tabs").find(".active").removeClass("active");
+        $("#add_new").addClass("active");
+        $("#todo-list").html("");
+        this.$el.html(this.template());
         return this; // enable chained calls
     },
     events: {
@@ -163,12 +167,14 @@ app.Router = Backbone.Router.extend({
     },
 
     default_route: function () {
-        app.appView = new app.AppView()
+        app.appView = new app.AppView();
+        app.appView.render();
     },
 
     newFunction: function () {
         console.log("jump to new page");
-        app.newView = new app.addNewView()
+        app.newView = new app.addNewView();
+        app.newView.render();
     },
 
     initialize: function () {
@@ -186,5 +192,16 @@ app.Router = Backbone.Router.extend({
         }
     }
 });
+
+app.bindEvents = function() {
+    $("#home").on("click", function(e) {
+        e.preventDefault();
+        Backbone.history.navigate("/", {trigger: true})
+    });
+    $("#add_new").on("click", function(e) {
+        e.preventDefault();
+        Backbone.history.navigate("add_new", {trigger: true})
+    });
+};
 
 app.router = new app.Router();
