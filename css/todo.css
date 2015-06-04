@@ -32,16 +32,9 @@ display: block;
 max-width: 100%;
 word-wrap: break-word;
 }
-body {
-    padding-left: 10%;
-    padding-right: 10%;
-    background-color: #f6f6f6;
-}
-/*header {*/
-    /*padding: 30px 30px 10px 20px;*/
-/*}*/
 
 header > input {
     margin: 20px auto 20px auto;
 }
+
 

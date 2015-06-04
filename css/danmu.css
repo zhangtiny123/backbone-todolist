@@ -1,0 +1,26 @@
+.dan-mu {
+    display: inline-block;
+    position: fixed;
+    height: 180px;
+    width: 100%;
+    background-color: black;
+    color: yellowgreen;
+    opacity: 0.5;
+    z-index: 100;
+}
+
+.dan-mu input {
+    position: relative;
+    transform: translate(0, 150px);
+}
+
+@-webkit-keyframes my_move {
+    from {left: 0}
+    to {left: 100%}
+}
+
+/* Standard syntax */
+@keyframes my_move {
+    from {left: 0}
+    to {left: 100%}
+}
