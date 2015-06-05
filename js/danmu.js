@@ -12,11 +12,13 @@ DAN_MU_APP.getSelfInput = function(e) {
     }
 
     var comment = {};
-    comment.text = input.val().trim();
+    comment.content = input.val().trim();
     comment.position = Math.floor(Math.random() * 3);
-
+    comment.color = $("[name='font-color']")[0].value.trim() || "#ffffff";
+    comment.font_size = $("[name='font-size']")[0].value.trim() || "0";
     DAN_MU_APP.cache_comment.push(comment);
     input.val('');
+    saveBarrageData();
 };
 
 $("#comment_input").on("keypress", function(e) {
@@ -50,7 +52,10 @@ function start() {
     }
     var data = DAN_MU_APP.dan_mus.pop();
     if (data !== undefined) {
-        var span = "<span style=\"position:absolute;transform:translate(0," + data.position * 50 + "px);animation:my_move 10s linear 1;\">" + data.content + "</span>";
+        if(data.size == "1"){
+            data.size ="25";
+        }else{data.size="15";}
+        var span = "<span style=\"position:absolute;color:"+data.color+";font-size:"+data.size+"px;transform:translate(0," + data.position * 50 + "px);animation:my_move 10s linear 1;\">" + data.content + "</span>";
         var danMuParent = $("#dan_mu_parent");
         $(span).appendTo(danMuParent);
         danMuParent.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', "span", function () {
@@ -78,7 +83,7 @@ function getBarrageData() {
 }
 
 function saveBarrageData() {
-    var url = 'http://10.29.2.253:8080/casaDS/barrage/add_barrage.ds?listingId='+$("#emailListingIdFragment")[0].value+"&dataType="+dataType()+"&text="+comment.text+"&position="+comment.position;
+    var url = 'http://10.29.2.253:8080/casaDS/barrage/add_barrage.ds?listingId='+$("#emailListingIdFragment")[0].value+"&dataType=1&content="+DAN_MU_APP.cache_comment[0].text+"&position="+DAN_MU_APP.cache_comment[0].position+"&color"+DAN_MU_APP.cache_comment[0].color+"&size"+DAN_MU_APP.cache_comment[0].font_size;
     $.ajax({
         type: 'GET',
         url: url,
