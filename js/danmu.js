@@ -44,6 +44,7 @@ var dan_mus = [{"text": "hahahaha", "id":"1", "color": "red", "size": "0", "posi
     }];
 
 DAN_MU_APP.cache_comment = [];
+DAN_MU_APP.refreshId = -1;
 
 DAN_MU_APP.getCommentsFromServer = function() {
     return dan_mus;
@@ -64,23 +65,27 @@ DAN_MU_APP.getSelfInput = function(e) {
 };
 
 $("#comment_input").on("keypress", function(e) {
-    //e.preventDefault();
     DAN_MU_APP.getSelfInput(e);
 });
 
 $(".switch_button").on("click", function() {
-    var refreshId = 0;
     if($(this).position().top === 0) {
+        $(this).text("BULLET OFF");
         $(this).css({
-            top: 180
+            "background-color": "gray",
+            "color": "black",
+            "top": 180
         });
-        refreshId = DAN_MU_APP.start_dan_mu();
+        DAN_MU_APP.start_dan_mu();
     }
     else {
+        $(this).text("BULLET ON");
         $(this).css({
-            top: 0
+            "background-color": "greenyellow",
+            "color": "red",
+            "top": 0
         });
-        DAN_MU_APP.stop_dan_mu(refreshId);
+        DAN_MU_APP.stop_dan_mu();
     }
 });
 
@@ -102,14 +107,14 @@ function start() {
 
 DAN_MU_APP.start_dan_mu = function() {
     $("#dan_mu_parent").removeAttr("hidden");
-    return setInterval(function () {
+    DAN_MU_APP.refreshId = setInterval(function () {
         start();
     }, 1000);
 };
 
-DAN_MU_APP.stop_dan_mu = function(refreshIntervalId) {
+DAN_MU_APP.stop_dan_mu = function() {
     var parent = $("#dan_mu_parent");
     parent.find("span").remove();
     parent.attr("hidden", "hidden");
-    clearInterval(refreshIntervalId);
+    clearInterval(DAN_MU_APP.refreshId);
 };
