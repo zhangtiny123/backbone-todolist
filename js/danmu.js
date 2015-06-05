@@ -109,7 +109,7 @@ DAN_MU_APP.start_dan_mu = function() {
 
 DAN_MU_APP.stop_dan_mu = function(refreshIntervalId) {
     var parent = $("#dan_mu_parent");
-    parent.empty();
+    parent.find("span").remove();
     parent.attr("hidden", "hidden");
     clearInterval(refreshIntervalId);
 };

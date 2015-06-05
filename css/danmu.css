@@ -16,7 +16,7 @@
 .dan-mu input {
     background-color: #0f0f0f;
     position: relative;
-    transform: translate(0, 150px);
+    transform: translate(60px, 150px);
 }
 
 .switch_button {
