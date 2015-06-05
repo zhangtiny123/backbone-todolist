@@ -64,7 +64,7 @@ DAN_MU_APP.getSelfInput = function(e) {
 };
 
 $("#comment_input").on("keypress", function(e) {
-    e.preventDefault();
+    //e.preventDefault();
     DAN_MU_APP.getSelfInput(e);
 });
 
