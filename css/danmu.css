@@ -10,7 +10,7 @@ body {
     display: inline-block;
     visibility: hidden;
     position: fixed;
-    height: 180px;
+    height: 200px;
     width: 100%;
     box-sizing: border-box;
     background-color: black;
@@ -26,7 +26,7 @@ body {
     background-color: #0f0f0f;
     color: black;
     position: relative;
-    transform: translate(60px, 150px);
+    transform: translate(100px, 150px);
     outline: none;
 }
 
@@ -42,9 +42,10 @@ body {
     appearance: none;
     padding-left: 15px;
     padding-right: 15px;
+    margin-right: 100px;
     background-color: #0f0f0f;
     position: relative;
-    transform: translate(160px, 150px);
+    transform: translate(200px, 150px);
     outline: none;
 }
 
@@ -62,6 +63,19 @@ body {
     outline: none;
     right: 30px;
     z-index: 100;
+}
+
+.dan-mu #audio_frame {
+    height: 35px;
+    width: 800px;
+    border: 0;
+    display: inline-block;
+    transform: translate(260px, 160px);
+}
+
+.dan-mu #controls {
+    height: 80px;
+    padding: 0;
 }
 
 @-webkit-keyframes my_move {
