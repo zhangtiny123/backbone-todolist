@@ -1,5 +1,5 @@
 var DAN_MU_APP = {};
-DAN_MU_APP.timestamp = [];
+DAN_MU_APP.timestamp=0;
 DAN_MU_APP.dan_mus = [];
 DAN_MU_APP.interval_for_barrage_appear = -1;
 DAN_MU_APP.interval_for_fetch_data = -1;
@@ -14,11 +14,11 @@ DAN_MU_APP.getSelfInput = function(e) {
     var comment = {};
     comment.content = input.val().trim();
     comment.position = Math.floor(Math.random() * 3);
-    comment.color = $("[name='font-color']")[0].value.trim() || "#ffffff";
-    comment.font_size = $("[name='font-size']")[0].value.trim() || "0";
+    comment.color = $("[name='font-color']")[0].value.trim();
+    comment.font_size = $("[name='font-size']")[0].value.trim();
+    saveBarrageData(comment);
     DAN_MU_APP.cache_comment.push(comment);
     input.val('');
-    saveBarrageData();
 };
 
 $("#comment_input").on("keypress", function(e) {
@@ -48,9 +48,9 @@ $(".switch_button").on("click", function() {
 });
 
 function start() {
-    if (DAN_MU_APP.cache_comment.length !== 0) {
-        DAN_MU_APP.dan_mus.push(DAN_MU_APP.cache_comment.pop())
-    }
+    //if (DAN_MU_APP.cache_comment.length !== 0) {
+    //    DAN_MU_APP.dan_mus.push(DAN_MU_APP.cache_comment.pop())
+    //}
     var data = DAN_MU_APP.dan_mus.pop();
     if (data !== undefined) {
         if(data.size == "1"){
@@ -93,19 +93,16 @@ function getBarrageData() {
     });
 }
 
-function saveBarrageData() {
+function saveBarrageData(comment) {
     //var url = 'http://10.29.2.253:8080/casaDS/barrage/add_barrage.ds?listingId='+$("#emailListingIdFragment")[0].value+"&dataType=1&content="+DAN_MU_APP.cache_comment[0].text+"&position="+DAN_MU_APP.cache_comment[0].position+"&color"+DAN_MU_APP.cache_comment[0].color+"&size"+DAN_MU_APP.cache_comment[0].font_size;
-    var url = 'http://10.29.2.253:8080/casaDS/barrage/add_barrage.ds?listingId='+22000053+"&dataType=1&content="+DAN_MU_APP.cache_comment[0].text+"&position="+DAN_MU_APP.cache_comment[0].position+"&color"+DAN_MU_APP.cache_comment[0].color+"&size"+DAN_MU_APP.cache_comment[0].font_size;
+    var url = 'http://10.29.2.253:8080/casaDS/barrage/add_barrage.ds?listingId='+22000053+"&barrageType=1&content="+comment.content+"&position="+comment.position+"&color="+comment.color+"&size="+comment.font_size;
     $.ajax({
         type: 'GET',
         url: url,
         async: false,
         dataType: 'jsonp',
-        jsonpCallback: 'jsonCallback',
         contentType: "application/json",
-        success: function (result) {
-            DAN_MU_APP.dan_mus = DAN_MU_APP.dan_mus.concat(result.results);
-        }
+        jsonpCallback: 'jsonCallback'
     });
 }
 
