@@ -55,7 +55,7 @@ function start() {
         if(data.size == "1"){
             data.size ="25";
         }else{data.size="15";}
-        var span = "<span style=\"position:absolute;color:"+data.color+";font-size:"+data.size+"px;transform:translate(0," + data.position * 50 + "px);animation:my_move 10s linear 1;\">" + data.content + "</span>";
+        var span = "<span style=\"white-space: nowrap;position:absolute;color:"+data.color+";font-size:"+data.size+"px;transform:translate(0," + data.position * 50 + "px);animation:my_move 10s linear 1;\">" + data.content + "</span>";
         var danMuParent = $("#dan_mu_parent");
         $(span).appendTo(danMuParent);
         danMuParent.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', "span", function () {
@@ -83,7 +83,8 @@ function getBarrageData() {
 }
 
 function saveBarrageData() {
-    var url = 'http://10.29.2.253:8080/casaDS/barrage/add_barrage.ds?listingId='+$("#emailListingIdFragment")[0].value+"&dataType=1&content="+DAN_MU_APP.cache_comment[0].text+"&position="+DAN_MU_APP.cache_comment[0].position+"&color"+DAN_MU_APP.cache_comment[0].color+"&size"+DAN_MU_APP.cache_comment[0].font_size;
+    //var url = 'http://10.29.2.253:8080/casaDS/barrage/add_barrage.ds?listingId='+$("#emailListingIdFragment")[0].value+"&dataType=1&content="+DAN_MU_APP.cache_comment[0].text+"&position="+DAN_MU_APP.cache_comment[0].position+"&color"+DAN_MU_APP.cache_comment[0].color+"&size"+DAN_MU_APP.cache_comment[0].font_size;
+    var url = 'http://10.29.2.253:8080/casaDS/barrage/add_barrage.ds?listingId='+22000053+"&dataType=1&content="+DAN_MU_APP.cache_comment[0].text+"&position="+DAN_MU_APP.cache_comment[0].position+"&color"+DAN_MU_APP.cache_comment[0].color+"&size"+DAN_MU_APP.cache_comment[0].font_size;
     $.ajax({
         type: 'GET',
         url: url,
@@ -98,7 +99,9 @@ function saveBarrageData() {
 }
 
 DAN_MU_APP.start_dan_mu = function() {
-    $("#dan_mu_parent").removeAttr("hidden");
+    $("#dan_mu_parent").css({
+        "visibility": "visible"
+    });
     getBarrageData();
     DAN_MU_APP.interval_for_barrage_appear = setInterval(function () {
         start();
@@ -111,7 +114,9 @@ DAN_MU_APP.start_dan_mu = function() {
 DAN_MU_APP.stop_dan_mu = function() {
     var parent = $("#dan_mu_parent");
     parent.find("span").remove();
-    parent.attr("hidden", "hidden");
+    parent.css({
+        "visibility": "hidden"
+    })
     clearInterval(DAN_MU_APP.interval_for_barrage_appear);
     clearInterval(DAN_MU_APP.interval_for_fetch_data);
 };
