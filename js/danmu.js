@@ -68,6 +68,22 @@ $("#comment_input").on("keypress", function(e) {
     DAN_MU_APP.getSelfInput(e);
 });
 
+$(".switch_button").on("click", function() {
+    var refreshId = 0;
+    if($(this).position().top === 0) {
+        $(this).css({
+            top: 180
+        });
+        refreshId = DAN_MU_APP.start_dan_mu();
+    }
+    else {
+        $(this).css({
+            top: 0
+        });
+        DAN_MU_APP.stop_dan_mu(refreshId);
+    }
+});
+
 function start() {
     var commentForShow = DAN_MU_APP.getCommentsFromServer();
     if (DAN_MU_APP.cache_comment.length !== 0) {
@@ -86,7 +102,14 @@ function start() {
 
 DAN_MU_APP.start_dan_mu = function() {
     $("#dan_mu_parent").removeAttr("hidden");
-    setInterval(function () {
+    return setInterval(function () {
         start();
     }, 1000);
+};
+
+DAN_MU_APP.stop_dan_mu = function(refreshIntervalId) {
+    var parent = $("#dan_mu_parent");
+    parent.empty();
+    parent.attr("hidden", "hidden");
+    clearInterval(refreshIntervalId);
 };

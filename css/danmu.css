@@ -1,17 +1,29 @@
+.my-container {
+    z-index: 100;
+}
+
 .dan-mu {
     display: inline-block;
     position: fixed;
     height: 180px;
     width: 100%;
     background-color: black;
-    color: yellowgreen;
+    color: yellow;
     opacity: 0.5;
     z-index: 100;
 }
 
 .dan-mu input {
+    background-color: #0f0f0f;
     position: relative;
     transform: translate(0, 150px);
+}
+
+.switch_button {
+    float: right;
+    position: relative;
+    color: yellow;
+    z-index: 100;
 }
 
 @-webkit-keyframes my_move {
