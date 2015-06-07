@@ -154,6 +154,54 @@ app.addNewView = Backbone.View.extend({
     }
 });
 
+app.pendingView = Backbone.View.extend({
+    el: '#todo-list' ,
+    initialize: function() {
+        app.bindEvents();
+        app.todoList.on('add', this.render());
+        app.todoList.on('reset' , this.render());
+        app.todoList.fetch();
+    },
+    render: function() {
+        $(".nav-tabs").find(".active").removeClass("active");
+        $("#pending").addClass("active");
+        $("#todo-list").html("");
+        this.display_pending();
+    },
+
+    display_pending: function() {
+        _.each(app.todoList.remaining(), function(todo) {
+            var view = new app.TodoView({model: todo});
+            $('#todo-list').append(view.render().el);
+        });
+    }
+
+});
+
+app.completeView = Backbone.View.extend({
+    el: '#todo-list' ,
+    initialize: function() {
+        app.bindEvents();
+        app.todoList.on('add', this.render());
+        app.todoList.on('reset' , this.render());
+        app.todoList.fetch();
+    },
+    render: function() {
+        $(".nav-tabs").find(".active").removeClass("active");
+        $("#completed").addClass("active");
+        $("#todo-list").html("");
+        this.display_complete();
+    },
+
+    display_complete: function() {
+        _.each(app.todoList.completed(), function(todo) {
+            var view = new app.TodoView({model: todo});
+            $('#todo-list').append(view.render().el);
+        });
+    }
+
+});
+
 app.Router = Backbone.Router.extend({
     routes: {
         '*filter': 'setFilter'
@@ -176,18 +224,30 @@ app.Router = Backbone.Router.extend({
         app.newView.render();
     },
 
+    pending_route: function() {
+        app.pending = new app.pendingView();
+        app.pending.render();
+    },
+
+    complete_route: function() {
+        app.complete = new app.completeView();
+        app.complete.render();
+    },
+
     initialize: function () {
         {
             var router = this,
                 routes = [
                     [/^.*$/, "default_route"],
-                    ["add_new", "newFunction"]
+                    ["add_new", "newFunction"],
+                    ["pending", "pending_route"],
+                    ["complete", "complete_route"]
                 ];
 
             _.each(routes, function (route) {
                 router.route.apply(router, route);
               });
-            Backbone.history.start();
+            Backbone.history.start({pushState: true});
         }
     }
 });
@@ -200,6 +260,14 @@ app.bindEvents = function() {
     $("#add_new").on("click", function(e) {
         e.preventDefault();
         Backbone.history.navigate("add_new", {trigger: true})
+    });
+    $("#pending").on("click", function(e) {
+        e.preventDefault();
+        Backbone.history.navigate("pending", {trigger: true})
+    });
+    $("#completed").on("click", function(e) {
+        e.preventDefault();
+        Backbone.history.navigate("complete", {trigger: true})
     });
 };
 

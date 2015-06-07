@@ -48,9 +48,9 @@ $(".switch_button").on("click", function() {
 });
 
 function start() {
-    //if (DAN_MU_APP.cache_comment.length !== 0) {
-    //    DAN_MU_APP.dan_mus.push(DAN_MU_APP.cache_comment.pop())
-    //}
+    if (DAN_MU_APP.cache_comment.length !== 0) {
+        DAN_MU_APP.dan_mus.push(DAN_MU_APP.cache_comment.pop())
+    }
     var data = DAN_MU_APP.dan_mus.pop();
     if (data !== undefined) {
         if(data.size == "1"){
