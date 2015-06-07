@@ -95,6 +95,7 @@ app.AppView = Backbone.View.extend({
         }
         app.todoList.create(this.newAttributes());
         this.input.val(''); // clean input box
+        Backbone.history.navigate("/", {trigger: true})
     },
     addOne: function (todo) {
         var view = new app.TodoView({model: todo});
