@@ -101,19 +101,9 @@ app.AppView = Backbone.View.extend({
         $('#todo-list').append(view.render().el);
     },
     addAll: function () {
+        console.log('add all');
         this.$('#todo-list').html(''); // clean the todo list
-        // filter todo item list
-        switch (window.filter) {
-            case 'pending':
-                _.each(app.todoList.remaining(), this.addOne);
-                break;
-            case 'completed':
-                _.each(app.todoList.completed(), this.addOne);
-                break;
-            default:
-                app.todoList.each(this.addOne, this);
-                break;
-        }
+        app.todoList.each(this.addOne, this);
     },
     newAttributes: function () {
         return {
@@ -200,34 +190,31 @@ app.completeView = Backbone.View.extend({
 });
 
 app.Router = Backbone.Router.extend({
-    routes: {
-        '*filter': 'setFilter'
-    },
-
-    setFilter: function (params) {
-        console.log('app.router.params = ' + params);
-        window.filter = params.trim() || '';
-        app.todoList.trigger('reset');
-    },
-
     default_route: function () {
-        app.appView = new app.AppView();
+        if (!app.appView) {
+            app.appView = new app.AppView();
+        }
         app.appView.render();
     },
 
     newFunction: function () {
-        console.log("jump to new page");
-        app.newView = new app.addNewView();
+        if (!app.newView) {
+            app.newView = new app.addNewView();
+        }
         app.newView.render();
     },
 
     pending_route: function() {
-        app.pending = new app.pendingView();
+        if (!app.pending) {
+            app.pending = new app.pendingView();
+        }
         app.pending.render();
     },
 
     complete_route: function() {
-        app.complete = new app.completeView();
+        if (!app.complete) {
+            app.complete = new app.completeView();
+        }
         app.complete.render();
     },
 
