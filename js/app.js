@@ -77,7 +77,6 @@ app.AppView = Backbone.View.extend({
     el: '#todoapp',
     initialize: function () {
         this.input = this.$('#new-todo');
-        app.bindEvents();
         app.todoList.on('add', this.addAll, this);
         app.todoList.on('reset', this.addAll, this);
         app.todoList.fetch(); // Loads list from local storage
@@ -128,7 +127,6 @@ app.addNewView = Backbone.View.extend({
     el: '#todo-list',
     initialize: function () {
         this.input = this.$('#new-todo');
-        app.bindEvents();
     },
     render: function () {
         $(".nav-tabs").find(".active").removeClass("active");
@@ -158,7 +156,6 @@ app.addNewView = Backbone.View.extend({
 app.pendingView = Backbone.View.extend({
     el: '#todo-list' ,
     initialize: function() {
-        app.bindEvents();
         app.todoList.on('add', this.render());
         app.todoList.on('reset' , this.render());
         app.todoList.fetch();
@@ -182,7 +179,6 @@ app.pendingView = Backbone.View.extend({
 app.completeView = Backbone.View.extend({
     el: '#todo-list' ,
     initialize: function() {
-        app.bindEvents();
         app.todoList.on('add', this.render());
         app.todoList.on('reset' , this.render());
         app.todoList.fetch();
@@ -273,3 +269,4 @@ app.bindEvents = function() {
 };
 
 app.router = new app.Router();
+app.bindEvents();
