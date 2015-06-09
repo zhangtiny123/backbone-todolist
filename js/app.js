@@ -1,6 +1,6 @@
 'use strict';
 
-var app = {}; // create namespace for our app
+var app = {};
 
 app.Todo = Backbone.Model.extend({
     defaults: {
@@ -25,9 +25,7 @@ app.TodoList = Backbone.Collection.extend({
     }
 });
 
-// instance of the Collection
 app.todoList = new app.TodoList();
-
 
 app.show_input = function() {
     document.getElementById("new-todo").style.visibility = "visible";
@@ -37,7 +35,6 @@ app.hide_input = function() {
     document.getElementById("new-todo").style.visibility = "hidden";
 };
 
-// renders individual todo items list (li)
 app.TodoView = Backbone.View.extend({
     tagName: 'li',
     template: _.template($('#item-template').html()),
@@ -48,7 +45,7 @@ app.TodoView = Backbone.View.extend({
     },
     initialize: function () {
         this.model.on('change', this.render, this);
-        this.model.on('destroy', this.remove, this); // remove: Convenience Backbone's function for removing the view from the DOM.
+        this.model.on('destroy', this.remove, this);
     },
     events: {
         'dblclick label': 'edit',
@@ -81,7 +78,6 @@ app.TodoView = Backbone.View.extend({
     }
 });
 
-// renders the full list of todo items calling TodoView for each one.
 app.AppView = Backbone.View.extend({
     el: '#todoapp',
     initialize: function () {
@@ -99,11 +95,11 @@ app.AppView = Backbone.View.extend({
         'keypress #new-todo': 'createTodoOnEnter'
     },
     createTodoOnEnter: function (e) {
-        if (e.which !== 13 || !this.input.val().trim()) { // ENTER_KEY = 13
+        if (e.which !== 13 || !this.input.val().trim()) {
             return;
         }
         app.todoList.create(this.newAttributes());
-        this.input.val(''); // clean input box
+        this.input.val('');
     },
     addOne: function (todo) {
         var view = new app.TodoView({model: todo});
@@ -111,7 +107,7 @@ app.AppView = Backbone.View.extend({
     },
     addAll: function () {
         console.log('add all');
-        this.$('#todo-list').html(''); // clean the todo list
+        this.$('#todo-list').html('');
         app.todoList.each(this.addOne, this);
     },
     newAttributes: function () {
