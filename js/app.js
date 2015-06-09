@@ -167,7 +167,7 @@ app.Router = Backbone.Router.extend({
         if (!app.appView) {
             app.appView = new app.AppView();
         }
-        if (app.todoList.toJSON().length == 0) {
+        if (app.todoList.length == 0) {
             app.todoList.fetch();
         } else {
             app.appView.render();
