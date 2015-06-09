@@ -28,6 +28,15 @@ app.TodoList = Backbone.Collection.extend({
 // instance of the Collection
 app.todoList = new app.TodoList();
 
+
+app.show_input = function() {
+    document.getElementById("new-todo").style.visibility = "visible";
+};
+
+app.hide_input = function() {
+    document.getElementById("new-todo").style.visibility = "hidden";
+};
+
 // renders individual todo items list (li)
 app.TodoView = Backbone.View.extend({
     tagName: 'li',
@@ -40,8 +49,6 @@ app.TodoView = Backbone.View.extend({
     initialize: function () {
         this.model.on('change', this.render, this);
         this.model.on('destroy', this.remove, this); // remove: Convenience Backbone's function for removing the view from the DOM.
-        console.log(this);
-        console.log(this.model.toJSON())
     },
     events: {
         'dblclick label': 'edit',
@@ -81,11 +88,12 @@ app.AppView = Backbone.View.extend({
         this.input = this.$('#new-todo');
         app.todoList.on('add', this.addAll, this);
         app.todoList.on('reset', this.addAll, this);
-        app.todoList.fetch(); // Loads list from local storage
     },
     render: function() {
         $(".nav-tabs").find(".active").removeClass("active");
         $("#home").addClass("active");
+        app.show_input();
+        this.addAll();
     },
     events: {
         'keypress #new-todo': 'createTodoOnEnter'
@@ -96,7 +104,7 @@ app.AppView = Backbone.View.extend({
         }
         app.todoList.create(this.newAttributes());
         this.input.val(''); // clean input box
-        Backbone.history.navigate("/", {trigger: true})
+        //Backbone.history.navigate("/", {trigger: true})
     },
     addOne: function (todo) {
         var view = new app.TodoView({model: todo});
@@ -115,36 +123,6 @@ app.AppView = Backbone.View.extend({
     }
 });
 
-app.addNewView = Backbone.View.extend({
-    el: '#todo-list',
-    initialize: function () {
-        this.input = this.$('#new-todo');
-    },
-    render: function () {
-        $(".nav-tabs").find(".active").removeClass("active");
-        $("#add_new").addClass("active");
-        $("#todo-list").html("");
-        return this; // enable chained calls
-    },
-    events: {
-        'keypress #new-todo': 'finishAddTodo'
-    },
-    finishAddTodo: function (e) {
-        if (e.which !== 13 || !this.input.val().trim()) { // ENTER_KEY = 13
-            return;
-        }
-        Backbone.history.navigate("/", {trigger: true});
-        app.todoList.create(this.newAttributes());
-        this.input.val(''); // clean input box
-    },
-    newAttributes: function () {
-        return {
-            title: this.input.val().trim(),
-            completed: false
-        }
-    }
-});
-
 app.pendingView = Backbone.View.extend({
     el: '#todo-list' ,
     initialize: function() {},
@@ -152,6 +130,7 @@ app.pendingView = Backbone.View.extend({
         $(".nav-tabs").find(".active").removeClass("active");
         $("#pending").addClass("active");
         $("#todo-list").html("");
+        app.hide_input();
         this.display_pending();
     },
 
@@ -171,6 +150,7 @@ app.completeView = Backbone.View.extend({
         $(".nav-tabs").find(".active").removeClass("active");
         $("#completed").addClass("active");
         $("#todo-list").html("");
+        app.hide_input();
         this.display_complete();
     },
 
@@ -188,14 +168,11 @@ app.Router = Backbone.Router.extend({
         if (!app.appView) {
             app.appView = new app.AppView();
         }
-        app.appView.render();
-    },
-
-    newFunction: function () {
-        if (!app.newView) {
-            app.newView = new app.addNewView();
+        if (app.todoList.toJSON().length == 0) {
+            app.todoList.fetch();
+        } else {
+            app.appView.render();
         }
-        app.newView.render();
     },
 
     pending_route: function() {
@@ -217,7 +194,6 @@ app.Router = Backbone.Router.extend({
             var router = this,
                 routes = [
                     [/^.*$/, "default_route"],
-                    ["add_new", "newFunction"],
                     ["pending", "pending_route"],
                     ["complete", "complete_route"]
                 ];
@@ -238,7 +214,6 @@ app.bindEvents = function() {
         });
     }
     bindClick("#home", "/");
-    bindClick("#add_new", "add_new");
     bindClick("#pending", "pending");
     bindClick("#completed", "complete")
 };
