@@ -1,6 +1,6 @@
 * Run
 
-first :  bower install &  npm install
+first :  bower install
 
 I use :  
     python -m SimpleHTTPServer
