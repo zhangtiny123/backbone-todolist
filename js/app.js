@@ -40,6 +40,8 @@ app.TodoView = Backbone.View.extend({
     initialize: function () {
         this.model.on('change', this.render, this);
         this.model.on('destroy', this.remove, this); // remove: Convenience Backbone's function for removing the view from the DOM.
+        console.log(this);
+        console.log(this.model.toJSON())
     },
     events: {
         'dblclick label': 'edit',
@@ -145,11 +147,7 @@ app.addNewView = Backbone.View.extend({
 
 app.pendingView = Backbone.View.extend({
     el: '#todo-list' ,
-    initialize: function() {
-        app.todoList.on('add', this.render());
-        app.todoList.on('reset' , this.render());
-        app.todoList.fetch();
-    },
+    initialize: function() {},
     render: function() {
         $(".nav-tabs").find(".active").removeClass("active");
         $("#pending").addClass("active");
@@ -168,11 +166,7 @@ app.pendingView = Backbone.View.extend({
 
 app.completeView = Backbone.View.extend({
     el: '#todo-list' ,
-    initialize: function() {
-        app.todoList.on('add', this.render());
-        app.todoList.on('reset' , this.render());
-        app.todoList.fetch();
-    },
+    initialize: function() {},
     render: function() {
         $(".nav-tabs").find(".active").removeClass("active");
         $("#completed").addClass("active");
@@ -237,22 +231,16 @@ app.Router = Backbone.Router.extend({
 });
 
 app.bindEvents = function() {
-    $("#home").on("click", function(e) {
-        e.preventDefault();
-        Backbone.history.navigate("/", {trigger: true})
-    });
-    $("#add_new").on("click", function(e) {
-        e.preventDefault();
-        Backbone.history.navigate("add_new", {trigger: true})
-    });
-    $("#pending").on("click", function(e) {
-        e.preventDefault();
-        Backbone.history.navigate("pending", {trigger: true})
-    });
-    $("#completed").on("click", function(e) {
-        e.preventDefault();
-        Backbone.history.navigate("complete", {trigger: true})
-    });
+    function bindClick(id, path) {
+        $(id).on("click", function(e) {
+            e.preventDefault();
+            Backbone.history.navigate(path, {trigger: true})
+        });
+    }
+    bindClick("#home", "/");
+    bindClick("#add_new", "add_new");
+    bindClick("#pending", "pending");
+    bindClick("#completed", "complete")
 };
 
 app.router = new app.Router();
