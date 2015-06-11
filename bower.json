@@ -18,7 +18,8 @@
     "backbone": "0.9.2",
     "underscore": "1.8.3",
     "jquery": "2.1.4",
-    "backbone.localstorage": "1.1.13"
+    "backbone.localstorage": "1.1.13",
+    "requirejs": "~2.1.18"
   },
   "resolutions": {
     "backbone": "0.9.2"
