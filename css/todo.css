@@ -1,36 +1,44 @@
 #todoapp ul {
-    list-style-type: none; /* Hides bullet points from todo list */
+    list-style-type: none;
 }
+
 #todo-list input.edit {
-    display: none; /* Hides input box*/
+    display: none;
 }
+
 #todo-list .editing label {
-    display: none; /* Hides label text when .editing*/
+    display: none;
 }
+
 #todo-list .editing input.edit {
-    display: inline; /* Shows input text box when .editing*/
+    display: inline;
 }
 
 .form-control {
     display: inline-block;
 }
+
 .add_button {
     margin: 10px 0 10px 0;
 }
+
 .checkbox {
     margin-top: 20px;
 }
+
 .completed_item {
     text-decoration: line-through;
 }
+
 h1 {
     display: inline-block;
     color: #292b33;
 }
+
 .text_holder {
-display: block;
-max-width: 100%;
-word-wrap: break-word;
+    display: block;
+    max-width: 100%;
+    word-wrap: break-word;
 }
 
 header > input {
